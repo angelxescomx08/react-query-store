@@ -1,12 +1,28 @@
 import { ProductList } from ".."
+import { useProducts } from "../../hooks"
 
 
 export const CompleteListPage = () => {
+
+  const { productsQuery } = useProducts({})
+
+  console.log(productsQuery.data);
+
   return (
     <div className="flex-col">
       <h1 className="text-2xl font-bold">Todos los productos</h1>
 
-      <ProductList />
+      {
+        productsQuery.isLoading && <p>Cargando...</p>
+      }
+
+      {
+        productsQuery.isError && <p>Ocurrió un error</p>
+      }
+
+      <ProductList
+        products={productsQuery?.data || []}
+      />
 
     </div>
   )

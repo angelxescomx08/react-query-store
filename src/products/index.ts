@@ -8,3 +8,5 @@ export * from './pages/MensPage';
 export * from './pages/NewProduct';
 export * from './pages/WomensPage';
 export * from './services/actions';
+
+export * as productsActions from './services';
