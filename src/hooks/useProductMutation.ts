@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { productsActions } from "../products";
+import { Product, productsActions } from "../products";
 
 export const useProductMutation = () => {
 
@@ -7,10 +7,19 @@ export const useProductMutation = () => {
 
   const productMutation = useMutation({
     mutationFn: productsActions.createProduct,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: ['products', { filterKey: data.category }]
-      });
+    // onSuccess: (data) => {
+    //   queryClient.invalidateQueries({
+    //     queryKey: ['products', { filterKey: data.category }]
+    //   });
+    // },
+    onSuccess: (product)=>{
+      queryClient.setQueryData<Product[]>(
+        ['products', { filterKey: product.category }],
+        (oldData) => {
+          if (!oldData) return [product];
+          return [...oldData, product];
+        }
+      )
     },
     onError: () => {
       console.log('Product creation failed');
