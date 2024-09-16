@@ -6,8 +6,6 @@ export const CompleteListPage = () => {
 
   const { productsQuery } = useProducts({})
 
-  console.log(productsQuery.data);
-
   return (
     <div className="flex-col">
       <h1 className="text-2xl font-bold">Todos los productos</h1>
