@@ -12,14 +12,25 @@ export const useProductMutation = () => {
     //     queryKey: ['products', { filterKey: data.category }]
     //   });
     // },
-    onSuccess: (product)=>{
+    // onSuccess: (product)=>{
+    //   queryClient.setQueryData<Product[]>(
+    //     ['products', { filterKey: product.category }],
+    //     (oldData) => {
+    //       if (!oldData) return [product];
+    //       return [...oldData, product];
+    //     }
+    //   )
+    // },
+    onMutate: (product) => {
+      const optimisticProduct: Product = {...product, id: Math.random()};
+
       queryClient.setQueryData<Product[]>(
         ['products', { filterKey: product.category }],
         (oldData) => {
-          if (!oldData) return [product];
-          return [...oldData, product];
+          if (!oldData) return [optimisticProduct];
+          return [...oldData, optimisticProduct];
         }
-      )
+      );
     },
     onError: () => {
       console.log('Product creation failed');
